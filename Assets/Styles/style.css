@@ -1,0 +1,14 @@
+main {
+    text-align: center;
+}
+
+.question{
+    margin-left: 20px;
+}
+
+.question ul{
+list-style: none;
+}
+.question ul li{
+    margin: 5px;
+    }
