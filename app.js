@@ -23,7 +23,7 @@ $(document).ready(function () {
         },
         { // object --> page 3
             title: "Question 3",
-            description: "In wich are in SF do you think I live?",
+            description: "In wich area of San Francisco do you think I live?",
             possibleAnswers: ["Inner Sunset", "FiDi", "Russian Hill", "Nob Hill"],
             correctAnswer: "Nob Hill",
         },
@@ -56,6 +56,7 @@ $(document).ready(function () {
         location.reload();
     })
 
+    // Event Listener on show the highscores when targeting the "View Scoreboard button"
     $("#scoreBoardPage").on("click", showHighscores)
 
     $("#alert").hide();
@@ -139,7 +140,7 @@ $(document).ready(function () {
 
         $("#questionContainer").prepend(`        
             <form>
-                <div class="form-group">
+                <div class="form-group m-2">
                     <input id="textInput" class="form-control mb-2" type="text" placeholder="Put your Name" />
                     <div class="text-right">
                         <button id="btnSubmit" class="btn btn-info" type="submit" value="Submit">Submit</button>
@@ -152,12 +153,15 @@ $(document).ready(function () {
         $("#btnSubmit").on("click", function (e) {
             e.preventDefault();
 
+            // Conditionnal to verify if the input is blank
             if ($("#textInput").val() === "") {
                 showAlert("Come on, I'm sure you have a super name", "danger");
             }
+            // Conditionnal to set the score to zero if the score is actually lower than zero
             if (secondsLeft < 0) {
                 secondsLeft = 0;
             }
+            // Set the user score
             else {
                 var score = {
                     "name": $("#textInput").val(),
@@ -172,6 +176,7 @@ $(document).ready(function () {
         })
     };
 
+    // Storing user score in local storage
     function saveScore(name) {
         var localScores = JSON.parse(window.localStorage.getItem("scores")) || [];
 
@@ -180,6 +185,7 @@ $(document).ready(function () {
         localStorage.setItem("scores", JSON.stringify(localScores));
     };
 
+    // Show highscore function, using the sorted array of score and limiting to 10 displayed score
     function showHighscores() {
         var scores = JSON.parse(window.localStorage.getItem("scores"));
         scores = sortScores(scores)
@@ -206,7 +212,7 @@ $(document).ready(function () {
         }
 
     }
-
+    // Sort score to get the highest ones on top
     function sortScores(scores) {
         return scores.sort(function (a, b) {
             return b.score - a.score;
