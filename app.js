@@ -1,9 +1,8 @@
 $(document).ready(function () {
     // Global scope
     var secondsLeft = 75;
-    var scores = JSON.parse(window.localStorage.getItem("scores"))
-
     var d = new Date();
+    var textInput = "";
 
     var quizz = [
         { // object --> page 1
@@ -47,14 +46,11 @@ $(document).ready(function () {
         showPage(0)
     });
 
-    // Event Listener on Submit btn to store score
-    // $("#btnSubmit").on("click", function (e) {
-    //     console.log("hello");
-    //     e.preventDefault();
-    //     storeScore($("#textInput").val());
-    //     window.location.href = "./scoreboard.html";
-    // })
+    $("#clearScoresBtn").on("click", function () {
+        window.localStorage.clear();
+    })
 
+    $("#scoreBoardPage").on("click", showHighscores)
 
     $("#alert").hide();
 
@@ -138,7 +134,7 @@ $(document).ready(function () {
         $("#questionContainer").prepend(`        
             <form>
                 <div class="form-group">
-                    <input id="textInput" class="form-control mb-2" type="text" placeholder="Put Initials" />
+                    <input id="textInput" class="form-control mb-2" type="text" placeholder="Put your Name" />
                     <div class="text-right">
                         <button id="btnSubmit" class="btn btn-info" type="submit" value="Submit">Submit</button>
                     </div>
@@ -146,29 +142,80 @@ $(document).ready(function () {
                 </div>
             </form >
                 `);
+        // Event Listener on Submit btn to store user score
         $("#btnSubmit").on("click", function (e) {
             e.preventDefault();
+
+            // if (textInput === "") {
+            //     showAlert("Come on, I'm sure you have a super name", "danger");
+            // }
+            scores = [];
+            // scores = JSON.parse(window.localStorage.getItem("scores"));
             // setScoreObject($("#textInput").val());
             scores.push({
-                "initials": $("#textInput").val(),
+                "name": $("#textInput").val(),
                 "score": secondsLeft,
                 "difficulty": "",
                 "date": d,
             });
+            console.log(scores)
             window.localStorage.setItem("scores", JSON.stringify(scores));
             window.location.href = "./scoreboard.html";
         })
+        showHighscores();
 
     };
 
+    function showHighscores() {
+        var scores = JSON.parse(window.localStorage.getItem("scores"));
+        for (i = 0; i < 10; i++) {
+            $("main").append(`        
+            <div class="row">
+            <div class="card mb-3 text-center col-12" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">${sortArray(score).score[i]}</h5>
+                    <h8 class="card-subtitle mb-2 text-muted">${sortArray.date[i]}</h8>
+                    <h1 class="card-text">${sortArray.score[i]}</h1>
+                    <a class="card-link">${sortArray.difficulty[i]}</a>
+                </div>
+            </div>
+        </div>
+                    `);
+        }
 
+    }
+
+    function sortArray(arr1) {
+        arr1.sort(function (a, b) { return a.arr1 - b.arr1 });
+    }
 
     // function setScoreObject(name) {
-    //     var scoresArray = JSON.stringify({
+    //     var scoresArray = || JSON.stringify({
     //         initials: name,
     //         score: secondsLeft,
     //         difficulty: "",
     //         date: "",
     //     })
     // };
+
+    // $("#btnSubmit").on("click", function (e) {
+    //     e.preventDefault();
+    //     // if (scores = null) {
+    //     //     scores = {
+    //     //         "initials": "init",
+    //     //         "score": "",
+    //     //         "difficulty": "",
+    //     //         "date": d,
+    //     //     }
+    //     // } scores = JSON.parse(window.localStorage.getItem("scores"));
+    //     // setScoreObject($("#textInput").val());
+    //     scores.push({
+    //         "initials": $("#textInput").val(),
+    //         "score": secondsLeft,
+    //         "difficulty": "",
+    //         "date": d,
+    //     });
+    //     window.localStorage.setItem("scores", JSON.stringify(scores));
+    //     window.location.href = "./scoreboard.html";
+    // })
 });
