@@ -1,6 +1,9 @@
 $(document).ready(function () {
     // Global scope
     var secondsLeft = 75;
+    var scores = JSON.parse(window.localStorage.getItem("scores"))
+
+    var d = new Date();
 
     var quizz = [
         { // object --> page 1
@@ -39,18 +42,18 @@ $(document).ready(function () {
     // Event Listener on Start button
     $("#startBtn").on("click", startTimer);
 
-    // $("#startBtn").on("click", clearContent);
 
     $("#startBtn").on("click", function () {
         showPage(0)
     });
 
-
-    $("#btnSubmit").on("click", function (e) {
-        e.preventDefault();
-        storeScore();
-        window.location.href = "./scoreboard.html";
-    })
+    // Event Listener on Submit btn to store score
+    // $("#btnSubmit").on("click", function (e) {
+    //     console.log("hello");
+    //     e.preventDefault();
+    //     storeScore($("#textInput").val());
+    //     window.location.href = "./scoreboard.html";
+    // })
 
 
     $("#alert").hide();
@@ -62,15 +65,15 @@ $(document).ready(function () {
         var timerInterval = setInterval(function () {
             secondsLeft--;
             $("#timer").text("Timer : " + secondsLeft + " sec");
-            if (secondsLeft === 0) {
+            if (secondsLeft < 0) {
                 clearInterval(timerInterval);
             }
         }, 1000)
     };
 
-    // function stopTimer() {
-    //     clearInterval(secondsLeft);
-    // }
+    function stopTimer() {
+        clearInterval(secondsLeft);
+    }
 
     // Clearing main content
     function clearContent(page) {
@@ -112,7 +115,7 @@ $(document).ready(function () {
                 showPage(page + 1);
             })
         } else {
-            // stopTimer();
+            stopTimer();
             endQuizz();
         }
 
@@ -131,6 +134,7 @@ $(document).ready(function () {
     }
 
     function endQuizz() {
+
         $("#questionContainer").prepend(`        
             <form>
                 <div class="form-group">
@@ -142,18 +146,29 @@ $(document).ready(function () {
                 </div>
             </form >
                 `);
+        $("#btnSubmit").on("click", function (e) {
+            e.preventDefault();
+            // setScoreObject($("#textInput").val());
+            scores.push({
+                "initials": $("#textInput").val(),
+                "score": secondsLeft,
+                "difficulty": "",
+                "date": d,
+            });
+            window.localStorage.setItem("scores", JSON.stringify(scores));
+            window.location.href = "./scoreboard.html";
+        })
 
     };
 
-    function storeScore() {
-        window.localStorage.setItem("scores",
-            JSON.stringify({
-                initials: $("#textInput").val(),
-                score: secondsLeft,
-                difficulty: "",
-                date: "",
-            }))
-    }
 
 
+    // function setScoreObject(name) {
+    //     var scoresArray = JSON.stringify({
+    //         initials: name,
+    //         score: secondsLeft,
+    //         difficulty: "",
+    //         date: "",
+    //     })
+    // };
 });
