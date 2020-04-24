@@ -11,33 +11,33 @@ $(document).ready(function () {
     var quizz = [
         { // object --> page 1
             title: "Question 1",
-            description: "description 1",
-            possibleAnswers: ["a1", "a2", "a3", "a4"],
-            correctAnswer: "a2",
+            description: "What is my favorite color?",
+            possibleAnswers: ["Blue", "Black", "Grey", "Green"],
+            correctAnswer: "Blue",
         },
         { // object --> page 2
             title: "Question 2",
-            description: "description 2",
-            possibleAnswers: ["a1", "a2", "a3", "a4"],
-            correctAnswer: "a2",
+            description: "What is my favorite smartphone brand?",
+            possibleAnswers: ["Apple", "Samsung", "OnePlus", "ASUS"],
+            correctAnswer: "OnePlus",
         },
         { // object --> page 3
             title: "Question 3",
-            description: "description 3",
-            possibleAnswers: ["a1", "a2", "a3", "a4"],
-            correctAnswer: "a2",
+            description: "In wich are in SF do you think I live?",
+            possibleAnswers: ["Inner Sunset", "FiDi", "Russian Hill", "Nob Hill"],
+            correctAnswer: "Nob Hill",
         },
         { // object --> page 4
             title: "Question 4",
-            description: "description 4",
-            possibleAnswers: ["a1", "a2", "a3", "a4"],
-            correctAnswer: "a2",
+            description: "Where do I come from?",
+            possibleAnswers: ["Germany", "Spain", "Texas", "France"],
+            correctAnswer: "France",
         },
         { // object --> page 4
             title: "Question 5",
-            description: "description 5",
-            possibleAnswers: ["a1", "a2", "a3", "a4"],
-            correctAnswer: "a2",
+            description: "What is my favorite competitive video game?",
+            possibleAnswers: ["Rocket League", "Overwatch", "VALORANT", "CS:GO"],
+            correctAnswer: "Rocket League",
         },
     ];
 
@@ -59,7 +59,6 @@ $(document).ready(function () {
     $("#scoreBoardPage").on("click", showHighscores)
 
     $("#alert").hide();
-
 
 
     // Starting timer
@@ -96,10 +95,10 @@ $(document).ready(function () {
             $("#questionContainer").prepend(`<h1 id="questionNumber">${quizzObject.title}</h1>
                 <p id="questionText" class="">${quizzObject.description}</p>
                 <ul id="questionList">
-                    <li><button id="a1" type="button" class="btn btn-info">${quizzObject.possibleAnswers[0]}</button></li>
-                    <li><button id="a2" type="button" class="btn btn-info">${quizzObject.possibleAnswers[1]}</button></li>
-                    <li><button id="a3" type="button" class="btn btn-info">${quizzObject.possibleAnswers[2]}</button></li>
-                    <li><button id="a4" type="button" class="btn btn-info">${quizzObject.possibleAnswers[3]}</button></li>
+                    <li><button id="a1" type="button" class="btn btn-info w-25">${quizzObject.possibleAnswers[0]}</button></li>
+                    <li><button id="a2" type="button" class="btn btn-info w-25">${quizzObject.possibleAnswers[1]}</button></li>
+                    <li><button id="a3" type="button" class="btn btn-info w-25">${quizzObject.possibleAnswers[2]}</button></li>
+                    <li><button id="a4" type="button" class="btn btn-info w-25">${quizzObject.possibleAnswers[3]}</button></li>
                 </ul>
                 `);
             // Event listeners on 
@@ -168,13 +167,9 @@ $(document).ready(function () {
                 };
 
                 saveScore(score);
-                // localStorage.setItem("scores", JSON.stringify(scores));
                 location.href = "./scoreboard.html";
             }
         })
-
-
-
     };
 
     function saveScore(name) {
