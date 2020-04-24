@@ -2,8 +2,12 @@ $(document).ready(function () {
     // Global scope
     var secondsLeft = 75;
     var d = new Date();
-    var textInput = "";
 
+    if (location.href.endsWith('scoreboard.html')) {
+        showHighscores();
+    }
+
+    // Array of objects containing each page with the question associated
     var quizz = [
         { // object --> page 1
             title: "Question 1",
@@ -46,8 +50,10 @@ $(document).ready(function () {
         showPage(0)
     });
 
+    // Event Listener on Highscore page
     $("#clearScoresBtn").on("click", function () {
         window.localStorage.clear();
+        location.reload();
     })
 
     $("#scoreBoardPage").on("click", showHighscores)
@@ -58,7 +64,7 @@ $(document).ready(function () {
 
     // Starting timer
     function startTimer() {
-        var timerInterval = setInterval(function () {
+        timerInterval = setInterval(function () {
             secondsLeft--;
             $("#timer").text("Timer : " + secondsLeft + " sec");
             if (secondsLeft < 0) {
@@ -67,8 +73,9 @@ $(document).ready(function () {
         }, 1000)
     };
 
+    // Stoping timer
     function stopTimer() {
-        clearInterval(secondsLeft);
+        clearInterval(timerInterval);
     }
 
     // Clearing main content
@@ -95,7 +102,7 @@ $(document).ready(function () {
                     <li><button id="a4" type="button" class="btn btn-info">${quizzObject.possibleAnswers[3]}</button></li>
                 </ul>
                 `);
-
+            // Event listeners on 
             $("li").on("click", function () {
                 // verifyAnswer()
                 var answer = $(this).text();
@@ -103,7 +110,7 @@ $(document).ready(function () {
                     showAlert("Good Job!", "success");
                 } else {
                     showAlert("Wrong Answer!", "danger")
-                    secondsLeft = secondsLeft - 15;
+                    secondsLeft -= 15;
                 }
 
                 clearContent("#questionContainer")
@@ -146,37 +153,57 @@ $(document).ready(function () {
         $("#btnSubmit").on("click", function (e) {
             e.preventDefault();
 
-            // if (textInput === "") {
-            //     showAlert("Come on, I'm sure you have a super name", "danger");
-            // }
-            scores = [];
-            // scores = JSON.parse(window.localStorage.getItem("scores"));
-            // setScoreObject($("#textInput").val());
-            scores.push({
-                "name": $("#textInput").val(),
-                "score": secondsLeft,
-                "difficulty": "",
-                "date": d,
-            });
-            console.log(scores)
-            window.localStorage.setItem("scores", JSON.stringify(scores));
-            window.location.href = "./scoreboard.html";
-        })
-        showHighscores();
+            if ($("#textInput").val() === "") {
+                showAlert("Come on, I'm sure you have a super name", "danger");
+            }
+            if (secondsLeft < 0) {
+                secondsLeft = 0;
+            }
+            else {
+                var score = {
+                    "name": $("#textInput").val(),
+                    "score": secondsLeft,
+                    "difficulty": "",
+                    "date": d,
+                };
 
+                saveScore(score);
+                // localStorage.setItem("scores", JSON.stringify(scores));
+                location.href = "./scoreboard.html";
+            }
+        })
+
+
+
+    };
+
+    function saveScore(name) {
+        var localScores = JSON.parse(window.localStorage.getItem("scores")) || [];
+
+        localScores.push(name);
+
+        localStorage.setItem("scores", JSON.stringify(localScores));
     };
 
     function showHighscores() {
         var scores = JSON.parse(window.localStorage.getItem("scores"));
+        scores = sortScores(scores)
+        console.log(scores)
+
         for (i = 0; i < 10; i++) {
+            var currentScore = scores[i];
+
+            if (!currentScore) {
+                continue;
+            }
             $("main").append(`        
             <div class="row">
             <div class="card mb-3 text-center col-12" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">${sortArray(score).score[i]}</h5>
-                    <h8 class="card-subtitle mb-2 text-muted">${sortArray.date[i]}</h8>
-                    <h1 class="card-text">${sortArray.score[i]}</h1>
-                    <a class="card-link">${sortArray.difficulty[i]}</a>
+                    <h5 class="card-title">${currentScore.name}</h5>
+                    <h8 class="card-subtitle mb-2 text-muted">${currentScore.date}</h8>
+                    <h1 class="card-text">${currentScore.score}</h1>
+                    <a class="card-link">${currentScore.difficulty}</a>
                 </div>
             </div>
         </div>
@@ -185,37 +212,10 @@ $(document).ready(function () {
 
     }
 
-    function sortArray(arr1) {
-        arr1.sort(function (a, b) { return a.arr1 - b.arr1 });
+    function sortScores(scores) {
+        return scores.sort(function (a, b) {
+            return b.score - a.score;
+        });
     }
 
-    // function setScoreObject(name) {
-    //     var scoresArray = || JSON.stringify({
-    //         initials: name,
-    //         score: secondsLeft,
-    //         difficulty: "",
-    //         date: "",
-    //     })
-    // };
-
-    // $("#btnSubmit").on("click", function (e) {
-    //     e.preventDefault();
-    //     // if (scores = null) {
-    //     //     scores = {
-    //     //         "initials": "init",
-    //     //         "score": "",
-    //     //         "difficulty": "",
-    //     //         "date": d,
-    //     //     }
-    //     // } scores = JSON.parse(window.localStorage.getItem("scores"));
-    //     // setScoreObject($("#textInput").val());
-    //     scores.push({
-    //         "initials": $("#textInput").val(),
-    //         "score": secondsLeft,
-    //         "difficulty": "",
-    //         "date": d,
-    //     });
-    //     window.localStorage.setItem("scores", JSON.stringify(scores));
-    //     window.location.href = "./scoreboard.html";
-    // })
 });
