@@ -215,6 +215,9 @@ $(document).ready(function () {
     }
     // Sort score to get the highest ones on top
     function sortScores(scores) {
+        if(!scores){
+            return [];
+        }
         return scores.sort(function (a, b) {
             return b.score - a.score;
         });
