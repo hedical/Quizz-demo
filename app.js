@@ -152,15 +152,16 @@ $(document).ready(function () {
         // Event Listener on Submit btn to store user score
         $("#btnSubmit").on("click", function (e) {
             e.preventDefault();
-
-            // Conditionnal to verify if the input is blank
-            if ($("#textInput").val() === "") {
-                showAlert("Come on, I'm sure you have a super name", "danger");
-            }
             // Conditionnal to set the score to zero if the score is actually lower than zero
             if (secondsLeft < 0) {
                 secondsLeft = 0;
             }
+            // Conditionnal to verify if the input is blank
+            if ($("#textInput").val() === "") {
+                showAlert("Come on, I'm sure you have a super name", "danger");
+            }
+            
+
             // Set the user score
             else {
                 var score = {
