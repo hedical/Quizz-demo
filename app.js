@@ -141,7 +141,7 @@ $(document).ready(function () {
         $("#questionContainer").prepend(`        
             <form>
                 <div class="form-group m-2">
-                    <input id="textInput" class="form-control mb-2" type="text" placeholder="Put your Name" />
+                    <input id="textInput" class="form-control mb-2" autofocus type="text" placeholder="Put your Name" />
                     <div class="text-right">
                         <button id="btnSubmit" class="btn btn-info" type="submit" value="Submit">Submit</button>
                     </div>
