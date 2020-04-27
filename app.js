@@ -190,7 +190,6 @@ $(document).ready(function () {
     function showHighscores() {
         var scores = JSON.parse(window.localStorage.getItem("scores"));
         scores = sortScores(scores)
-        console.log(scores)
 
         for (i = 0; i < 10; i++) {
             var currentScore = scores[i];
