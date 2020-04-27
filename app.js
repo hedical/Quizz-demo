@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Global scope
     var secondsLeft = 75;
-    var d = new Date();
+    var d = moment().format('MMMM Do YYYY, h:mm:ss a');
 
     if (location.href.endsWith('scoreboard.html')) {
         showHighscores();
@@ -160,7 +160,7 @@ $(document).ready(function () {
             if ($("#textInput").val() === "") {
                 showAlert("Come on, I'm sure you have a super name", "danger");
             }
-            
+
 
             // Set the user score
             else {
@@ -215,7 +215,7 @@ $(document).ready(function () {
     }
     // Sort score to get the highest ones on top
     function sortScores(scores) {
-        if(!scores){
+        if (!scores) {
             return [];
         }
         return scores.sort(function (a, b) {
